@@ -1,0 +1,63 @@
+def caesar_cipher(text, shift, mode='encrypt'):
+    """
+    Шифрует или расшифровывает текст методом Цезаря.
+
+    Параметры:
+    text (str): исходный текст
+    shift (int): сдвиг букв (положительный для шифрования, отрицательный для расшифровки)
+    mode (str): 'encrypt' — шифрование, 'decrypt' — расшифровка
+
+    Возвращает:
+    str: обработанный текст
+    """
+    result = ""
+
+    # Если режим расшифровки — инвертируем сдвиг
+    if mode == 'decrypt':
+        shift = -shift
+
+    for char in text:
+        if char.isalpha():  # Обрабатываем только буквы
+            # Определяем базовую букву ('a' для строчных, 'A' для прописных)
+            base = ord('a') if char.islower() else ord('A')
+            # Сдвигаем букву с учётом алфавита из 26 букв
+            shifted = (ord(char) - base + shift) % 26 + base
+            result += chr(shifted)
+        else:
+            # Оставляем без изменений (цифры, знаки препинания и т. д.)
+            result += char
+
+    return result
+
+
+
+def main():
+    print("=== Шифратор Цезаря ===")
+    print("Выберите режим:")
+    print("1 — Зашифровать текст")
+    print("2 — Расшифровать текст")
+
+    choice = input("Ваш выбор (1/2): ")
+
+    if choice not in ['1', '2']:
+        print("Ошибка: неверный выбор!")
+        return
+
+    text = input("Введите текст: ")
+    try:
+        shift = int(input("Введите сдвиг (целое число): "))
+    except ValueError:
+        print("Ошибка: сдвиг должен быть целым числом!")
+        return
+
+    if choice == '1':
+        result = caesar_cipher(text, shift, 'encrypt')
+        print(f"\nЗашифрованный текст: {result}")
+    else:
+        result = caesar_cipher(text, shift, 'decrypt')
+        print(f"\nРасшифрованный текст: {result}")
+
+
+# Запуск программы
+if __name__ == "__main__":
+    main()
